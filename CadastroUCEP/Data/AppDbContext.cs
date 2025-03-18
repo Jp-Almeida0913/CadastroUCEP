@@ -1,11 +1,5 @@
 ﻿using CadastroUCEP.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Authentication.ExtendedProtection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CadastroUCEP.Data
 {

@@ -7,11 +7,29 @@ namespace CadastroUCEP.Class
     public class Commands
     {
 
-        public static async Task NewUser(string name, string email, string password, string cep)
+        public static async Task NewUser(string name, string email)
         {
-            string number;
+            string password, hash, cep, number;
             bool stats;
+
             bool isValid = await VerifyEmail.CheckEmail(email);
+            var hasPassword = new HashPassword();
+
+            if (!isValid) return;
+
+            Console.WriteLine("Crie uma senha (mínimo 12 caracteres --> ");
+            password = Console.ReadLine();
+            while (password.Length < 12)
+            {
+                Console.Clear();
+                Console.WriteLine("A senha não cumpre os requisitos (menos de 12 caracteres)\n\nCrie uma senha válida ---> ");
+                password = Console.ReadLine();
+            }
+            
+            hash = hasPassword.GeneratePassword(password);
+
+            Console.WriteLine("Informe seu CEP --> ");
+            cep = Console.ReadLine();
 
             if (string.IsNullOrWhiteSpace(cep)) return;
 
@@ -27,15 +45,13 @@ namespace CadastroUCEP.Class
             Console.Write("Informe o número da casa --> ");
             number = Console.ReadLine();
 
-            if (!isValid) return;
-
             using (var context = new AppDbContext())
             {
                 var user = new Users
                 {
                     Name = name,
                     Email = email,
-                    Password = password,
+                    Password = hash,
                     Cep = cep,
                     Street = address.Street,
                     Number = number,
@@ -45,7 +61,7 @@ namespace CadastroUCEP.Class
                 };
 
                 context.Add(user);
-                context.SaveChanges();
+                await context.SaveChangesAsync();
                 Console.WriteLine("Cadastrado no banco de dados com sucesso!");
             }
         }
