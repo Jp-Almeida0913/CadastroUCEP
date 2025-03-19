@@ -13,7 +13,7 @@ namespace CadastroUCEP.Data
             {
                 entity.HasKey(u => u.User_ID);
                 entity.Property(u => u.Name).IsRequired();
-                entity.Property(u => u.Email).IsRequired();
+                entity.HasIndex(u => u.Email).IsUnique();
                 entity.Property(u => u.Password).IsRequired();
                 entity.Property(u => u.Cep).IsRequired();
                 entity.Property(u => u.Street).IsRequired();

@@ -9,13 +9,20 @@ namespace CadastroUCEP.Class
 
         public static async Task NewUser(string name, string email)
         {
+            var context = new AppDbContext();
             string password, hash, cep, number;
             bool stats;
 
             bool isValid = await VerifyEmail.CheckEmail(email);
+            bool exist = context.users.Any(u => u.Email == email);
             var hasPassword = new HashPassword();
 
             if (!isValid) return;
+            if (exist)
+            {
+                Console.WriteLine("Email já cadastrado!");
+                return;
+            }
 
             Console.WriteLine("Crie uma senha (mínimo 12 caracteres --> ");
             password = Console.ReadLine();
@@ -45,7 +52,7 @@ namespace CadastroUCEP.Class
             Console.Write("Informe o número da casa --> ");
             number = Console.ReadLine();
 
-            using (var context = new AppDbContext())
+            using (context)
             {
                 var user = new Users
                 {
