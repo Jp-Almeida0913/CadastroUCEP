@@ -5,7 +5,7 @@ namespace CadastroUCEP.Class
     class VerifyEmail
     {
         private static readonly HttpClient client = new HttpClient();
-        private static readonly string apiKey = "1f2e67d01549431524f8abc7c8f1539ffff829a2";
+        private static readonly string apiKey = "";
 
         public static async Task<bool> CheckEmail(string email)
         {
